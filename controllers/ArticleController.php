@@ -31,6 +31,17 @@ class ArticleController
             throw new Exception("L'article demandé n'existe pas.");
         }
 
+        /*Mise à jour du nombre de vues de l'article.
+        On crée un objet ArticleViewsManager et si l'article n'a pas de vues, on en crée un nouveau.
+        Sinon, on met à jour le nombre de vues.
+        */
+        $articleViewsManager = new ArticleViewsManager();
+        if (!$articleViewsManager->getArticleViews($id)) {
+            $articleViewsManager->addArticleViews(new ArticleViews(['id_article' => $id]));
+        } else {
+            $articleViewsManager->updateArticleViews(new ArticleViews(['id_article' => $id]));
+        }
+        
         $commentManager = new CommentManager();
         $comments = $commentManager->getAllCommentsByArticleId($id);
 
