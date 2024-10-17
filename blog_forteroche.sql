@@ -93,6 +93,18 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
+-- Structure de la table `article_views`
+--
+
+DROP TABLE IF EXISTS `article_views`;
+CREATE TABLE IF NOT EXISTS `article_views` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_article` int(11) NOT NULL,
+  `view_count` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
 -- Déchargement des données de la table `user`
 --
 
@@ -108,6 +120,12 @@ INSERT INTO `user` (`id`, `login`, `password`, `nickname`) VALUES
 --
 ALTER TABLE `article`
   ADD CONSTRAINT `link_article_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `article_views`
+--
+ALTER TABLE `article_views`
+  ADD CONSTRAINT `id_article` FOREIGN KEY (`id_article`) REFERENCES `article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `comment`
