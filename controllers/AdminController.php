@@ -25,6 +25,44 @@ class AdminController {
         ]);
     }
 
+    public function showMonitoring() : void
+    {
+        // On vérifie que l'utilisateur est connecté.
+        $this->checkIfUserIsConnected();
+
+        // On récupère les articles.
+        $articleManager = new ArticleManager();
+        $articles = $articleManager->getAllArticles();
+
+        //On récupère la date de publication pour chaque article.
+        foreach ($articles as $article) {
+            $article = $articleManager->getArticleById($article->getId());
+            $publicationDate = $article->getDateCreation()->format('d/m/Y');
+        }
+
+        //On récupère le nombre de vues pour chaque article.
+        $articleViewsManager = new ArticleViewsManager();
+        foreach ($articles as $article) {
+            $articleViews = $articleViewsManager->getArticleViews($article->getId());
+            $viewCount = $articleViews->getviewCount();
+        }
+
+        //On récupère le nombre de commentaires pour chaque article.
+        $commentManager = new CommentManager();
+        foreach ($articles as $article) {
+            $commentsCount = $commentManager->getCommentsCountByArticleId($article->getId());
+        }
+        
+        // On affiche la page de monitoring.
+        $view = new View("Monitoring");
+        $view->render("monitoring", [
+            'articles' => $articles,
+            'viewCount' => $viewCount,
+            'commentsCount' => $commentsCount,
+            'publicationDate' => $publicationDate
+        ]);
+    }
+
     /**
      * Vérifie que l'utilisateur est connecté.
      * @return void

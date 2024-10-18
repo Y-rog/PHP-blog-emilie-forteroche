@@ -5,7 +5,10 @@
      */
 ?>
 
-<h2>Edition des articles</h2>
+<nav class="secondaryNav" aria-label="Navigation secondaire" role="navigation">
+    <a href="index.php?action=admin"><h2>Edition des articles</h2></a>
+    <a href="index.php?action=monitoring"><h2>Monitoring</h2></a>
+</nav>
 
 <div class="adminArticle">
     <?php foreach ($articles as $article) { ?>

@@ -43,7 +43,7 @@ try {
             $adminController = new AdminController();
             $adminController->showAdmin();
             break;
-
+        
         case 'connectionForm':
             $adminController = new AdminController();
             $adminController->displayConnectionForm();
@@ -57,6 +57,11 @@ try {
         case 'disconnectUser':
             $adminController = new AdminController();
             $adminController->disconnectUser();
+            break;
+
+        case 'monitoring':
+            $adminController = new AdminController();
+            $adminController->showMonitoring();
             break;
 
         case 'showUpdateArticleForm':
