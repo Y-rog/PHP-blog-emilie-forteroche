@@ -6,6 +6,40 @@
 class AdminController {
 
     /**
+     * Affiche la page de monitoring.
+     * @return void
+     */
+    public function showMonitoring() : void
+    {
+        // On vérifie que l'utilisateur est connecté.
+        $this->checkIfUserIsConnected();
+
+        // On récupère les articles avec le nombre de vues, de commentaires et la date de publication.
+        $monitoringManager = new MonitoringManager();
+        $monitoring = $monitoringManager->getAllArticlesWithViewsAndComments();
+
+        // on trie le tableau en fonction des paramètre définit en Url
+        if (isset($_GET['sort']) && in_array($_GET['sort'], ['title', 'date_creation', 'article_views', 'comments'])) {
+            $sort = $_GET['sort'];
+            if (isset($_GET['order']) && in_array($_GET['order'], ['asc', 'desc'])) {
+                $order = $_GET['order'];
+            } else {
+                $order = 'asc';
+            }
+        } else {
+            $sort = 'date_creation';
+            $order = 'asc';
+        }
+        $monitoring = Utils::sortArray($monitoring, $sort, $order);
+
+        // On affiche la page de monitoring.
+        $view = new View("Monitoring");
+        $view->render("monitoring", [
+            'monitoring' => $monitoring,
+        ]);
+    }
+
+    /**
      * Affiche la page d'administration.
      * @return void
      */
@@ -22,44 +56,6 @@ class AdminController {
         $view = new View("Administration");
         $view->render("admin", [
             'articles' => $articles
-        ]);
-    }
-
-    public function showMonitoring() : void
-    {
-        // On vérifie que l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
-
-        // On récupère les articles.
-        $articleManager = new ArticleManager();
-        $articles = $articleManager->getAllArticles();
-
-        //On récupère la date de publication pour chaque article.
-        foreach ($articles as $article) {
-            $article = $articleManager->getArticleById($article->getId());
-            $publicationDate = $article->getDateCreation()->format('d/m/Y');
-        }
-
-        //On récupère le nombre de vues pour chaque article.
-        $articleViewsManager = new ArticleViewsManager();
-        foreach ($articles as $article) {
-            $articleViews = $articleViewsManager->getArticleViews($article->getId());
-            $viewCount = $articleViews->getviewCount();
-        }
-
-        //On récupère le nombre de commentaires pour chaque article.
-        $commentManager = new CommentManager();
-        foreach ($articles as $article) {
-            $commentsCount = $commentManager->getCommentsCountByArticleId($article->getId());
-        }
-        
-        // On affiche la page de monitoring.
-        $view = new View("Monitoring");
-        $view->render("monitoring", [
-            'articles' => $articles,
-            'viewCount' => $viewCount,
-            'commentsCount' => $commentsCount,
-            'publicationDate' => $publicationDate
         ]);
     }
 

@@ -20,12 +20,12 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($articles as $article) { ?>
+            <?php foreach ($monitoring as $article) { ?>
                 <tr>
-                    <td scope="row"><?= $article->getTitle() ?></td>
-                    <td scope="row"><?= $viewCount ?></td>
-                    <td scope="row"><?= $commentsCount ?></td>
-                    <td scope="row"><?= $publicationDate ?></td>
+                    <td scope="row"><?= htmlspecialchars($article->getTitle()) ?></td>
+                    <td scope="row"><?= htmlspecialchars($article->getArticleViews()) ?></td>
+                    <td scope="row"><?= htmlspecialchars($article->getComments()) ?></td>
+                    <td scope="row"><?= htmlspecialchars($article->getDateCreation()->format('d/m/Y')) ?></td>
                 </tr>
             <?php } ?>
         </tbody>

@@ -6,6 +6,39 @@
  * Exemple : Utils::redirect('home'); 
  */
 class Utils {
+
+    /**
+    * Tri un tableau d'objets en fonction de la colonne et du sens de tri.
+    * @param array $array : le tableau d'objets à trier.
+    * @param string $sort : la colonne sur laquelle trier.
+    * @param string $order : le sens du tri.
+    * @return array : le tableau trié.
+    */
+    public static function sortArray (array $array, string $sort, string $order) : array
+    {
+        usort($array, function($a, $b) use ($sort, $order) {
+            //On récupère le nom de la méthode à appeler pour obtenir la valeur de la colonne.
+            $method = self::toCamelCase("get_$sort");
+            if ($order === 'desc') {
+                return $b->$method() <=> $a->$method();
+            } else {
+                return $a->$method() <=> $b->$method();
+            }
+        });
+        return $array;
+    }
+
+    /** 
+    * méthode pour convertir snake_case en PascalCase
+    * @param string $string : la chaine à convertir.
+    * @return string : la chaine convertie.
+    */
+    public static function toCamelCase (string $string) : string
+    {
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+    }
+
+
     /**
      * Convertit une date vers le format de type "Samedi 15 juillet 2023" en francais.
      * @param DateTime $date : la date à convertir.

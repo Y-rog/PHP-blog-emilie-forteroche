@@ -8,6 +8,7 @@ class ArticleViews extends AbstractEntity
 {
     private int $id_article;
     private int $view_count;
+
     /**
      * Setter pour l'id de l'article.
      * @param int $article_id
