@@ -9,6 +9,7 @@
     private int $idUser;
     private string $title = "";
     private string $content = "";
+    private int $articleViews = 0;
     private ?DateTime $dateCreation = null;
     private ?DateTime $dateUpdate = null;  
 
@@ -80,6 +81,24 @@
     }
 
     /**
+     * Setter pour le nombre de vues.
+     * @param int $articleViews
+     */
+    public function setArticleViews(int $articleViews) : void
+    {
+        $this->articleViews = $articleViews;
+    }
+
+    /**
+     * Getter pour le nombre de vues.
+     * @return int
+     */
+    public function getArticleViews() : int
+    {
+        return $this->articleViews;
+    }
+
+    /**
      * Setter pour la date de création. Si la date est une string, on la convertit en DateTime.
      * @param string|DateTime $dateCreation
      * @param string $format : le format pour la convertion de la date si elle est une string.
@@ -126,5 +145,15 @@
     public function getDateUpdate() : ?DateTime 
     {
         return $this->dateUpdate;
+    }
+
+    /**
+     * Cette méthode permet de récupréer le nombre de commentaires associés à l'article.
+     * @return int
+     */
+    public function getComments() : int
+    {
+        $commentManager = new CommentManager();
+        return $commentManager->getCommentsCountByArticleId($this->getId());
     }
  }

@@ -9,25 +9,24 @@
     <a href="index.php?action=monitoring"><h2>Monitoring</h2></a>
 </nav>
 
-<div class="adminArticle">
-    <table class="monitoringTable">
-        <thead>
+<table class="monitoringTable">
+    <thead>
+        <tr>
+            <th scope="col"><a href="<?= Utils::displaySortLink($title, $sort, $order)?>">Titre<br><i class="fa-solid <?= Utils::displayCaret($sort, $title, $order) ?>"></i></a></th>
+            <th scope="col"><a href="<?= Utils::displaySortLink($articleViews, $sort, $order)?>">Nombre de vues<br><i class="fa-solid <?= Utils::displayCaret($sort, $articleViews, $order) ?>"></i></a></th>
+            <th scope="col"><a href="<?= Utils::displaySortLink($comments, $sort, $order)?>">Nombre de commentaires<br><i class="fa-solid <?= Utils::displayCaret($sort, $comments, $order) ?>"></i></a></th>
+            <th scope="col"><a href="<?= Utils::displaySortLink($dateCreation, $sort, $order)?>">Date de publication<br><i class="fa-solid <?= Utils::displayCaret($sort, $dateCreation, $order) ?>"></i></a></th>   
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($articles as $article) { ?>
             <tr>
-                <th scope="col">Titre<br><i class="fa-solid fa-caret-up"></i></th>
-                <th scope="col">Nombre de vues<br><i class="fa-solid fa-caret-up"></i></th>
-                <th scope="col">Nombre de commentaires<br><i class="fa-solid fa-caret-up"></i></th>
-                <th scope="col">Date de publication<br><i class="fa-solid fa-caret-up"></i></th>   
+                <td scope="row"><?= htmlspecialchars($article->getTitle()) ?></td>
+                <td scope="row"><?= htmlspecialchars($article->getArticleViews()) ?></td>
+                <td scope="row"><?= htmlspecialchars($article->getComments()) ?></td>
+                <td scope="row"><?= htmlspecialchars($article->getDateCreation()->format('d/m/Y')) ?></td>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($monitoring as $article) { ?>
-                <tr>
-                    <td scope="row"><?= htmlspecialchars($article->getTitle()) ?></td>
-                    <td scope="row"><?= htmlspecialchars($article->getArticleViews()) ?></td>
-                    <td scope="row"><?= htmlspecialchars($article->getComments()) ?></td>
-                    <td scope="row"><?= htmlspecialchars($article->getDateCreation()->format('d/m/Y')) ?></td>
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>        
-</div>
+        <?php } ?>
+    </tbody>
+</table>        
+

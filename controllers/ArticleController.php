@@ -25,23 +25,18 @@ class ArticleController
         $id = Utils::request("id", -1);
 
         $articleManager = new ArticleManager();
+        /**
+         * Mise à jour du nombre de vues de l'article.
+         * On incrémente le nombre de vues de 1.
+         * @param int $id_article : l'id de l'article.
+         * @return void
+        */
+        $article = $articleManager->updateArticleViews($id);
         $article = $articleManager->getArticleById($id);
         
         if (!$article) {
             throw new Exception("L'article demandé n'existe pas.");
-        }
-
-        /*Mise à jour du nombre de vues de l'article.
-        On crée un objet ArticleViewsManager et si l'article n'a pas de vues, on en crée un nouveau.
-        Sinon, on met à jour le nombre de vues.
-        */
-        $articleViewsManager = new ArticleViewsManager();
-        if (!$articleViewsManager->getArticleViews($id)) {
-            $articleViewsManager->addArticleViews(new ArticleViews(['id_article' => $id]));
-        } else {
-            $articleViewsManager->updateArticleViews(new ArticleViews(['id_article' => $id]));
-        }
-        
+        }        
         $commentManager = new CommentManager();
         $comments = $commentManager->getAllCommentsByArticleId($id);
 

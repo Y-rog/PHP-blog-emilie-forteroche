@@ -319,6 +319,12 @@ a.info {
     width: 100%;
     text-align: center;
     border-collapse: collapse;
+    background-color: var(--commentPaleColor);
+    color: white;
+}
+
+.monitoringTable th {
+    cursor: pointer;
 }
 
 .monitoringTable th, .monitoringTable td {

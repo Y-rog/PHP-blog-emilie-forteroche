@@ -8,6 +8,48 @@
 class Utils {
 
     /**
+     * Cette méthode permet d'afficher un lien de tri sur une colonne d'un tableau.
+     * @param string $sort : la colonne sur laquelle on veut trier.
+     * @param string $currentSort : la colonne actuellement triée.
+     * @param string $order : le sens du tri.
+     * @return string : le lien de tri.
+     */
+    public static function displaySortLink(string $sort, string $currentSort, string $order) : string
+    {
+        if ($sort === $currentSort) {
+            if ($order === 'asc') {
+                $newOrder = 'desc';
+            } else {
+                $newOrder = 'asc';
+            }
+        } else {
+            $newOrder = 'desc';
+        }
+        return "index.php?action=monitoring&sort=$sort&order=$newOrder";
+    }
+
+    /**
+     * Cette méthode permet d'afficher un caractère fléché vers le haut ou vers le bas
+     * en fonction de la colonne qui est triée
+     * @param string $sort : la colonne sur laquelle le trie est demandé.
+     * @param string $currentSort : la colonne actuellement triée
+     * @param string $order : le sens du tri.
+     * @return string : la classe à ajouter à la balise <i> pour afficher la flèche.
+     */
+    public static function displayCaret(string $sort, string $currentSort, string $order) : string
+    {
+        if ($sort === $currentSort) {
+            if ($order === 'asc') {
+                return 'fa-caret-up';
+            } else {
+                return 'fa-caret-down';
+            }
+        } else {
+            return '';
+        }
+    }
+
+    /**
     * Tri un tableau d'objets en fonction de la colonne et du sens de tri.
     * @param array $array : le tableau d'objets à trier.
     * @param string $sort : la colonne sur laquelle trier.

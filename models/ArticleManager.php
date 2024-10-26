@@ -92,4 +92,53 @@ class ArticleManager extends AbstractEntityManager
         $sql = "DELETE FROM article WHERE id = :id";
         $this->db->query($sql, ['id' => $id]);
     }
+
+    /**
+     * Récupère le nombre de vues d'un article.
+     * @param int $article_id : l'id de l'article.
+     * @return Article ou null : l'entité ArticleViews ou null si l'article n'a pas de vues.
+     */
+    public function getArticleViews(int $id) : ?Article
+    {
+        $sql = "SELECT * FROM article WHERE id = :id";
+        $result = $this->db->query($sql, ['id' => $id]);
+        $article = $result->fetch();
+        if ($article) {
+            return new Article($article);
+        }
+        return null;
+    }
+
+    /**
+     * Met à jour le nombre de vues d'un article.
+     * On incrémente le nombre de vues de 1.
+     * @param int $id_article : l'id de l'article.
+     * @return void
+     */
+    public function updateArticleViews(int $id) : void
+    {
+        $articleViews = $this->getArticleViews($id);
+        if ($articleViews) {
+            $sql = "UPDATE article SET article_views = :article_views WHERE id = :id";
+            $this->db->query($sql, ['article_views' => $articleViews->getArticleViews() + 1, 'id' => $id]);
+        }
+    }
+
+    /**
+     * Récupère tous les articles avec le titre, la date de création, le nombre de vues et de commentaires.
+     * @return array : un tableau d'objets Article.
+     */
+    public function getAllArticlesWithViewsAndComments() : array
+    {
+        $sql = "SELECT article.id, article.title, article.date_creation, article_views, COUNT(comment.id) AS comments 
+                FROM article
+                LEFT JOIN comment ON article.id = comment.id_article 
+                GROUP BY article.id";
+        $result = $this->db->query($sql);
+        $articles = [];
+        while ($article = $result->fetch()) {
+            $articles[] = new Article($article);
+        }
+        return $articles;
+    }    
 }

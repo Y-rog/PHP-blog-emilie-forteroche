@@ -15,8 +15,8 @@ class AdminController {
         $this->checkIfUserIsConnected();
 
         // On récupère les articles avec le nombre de vues, de commentaires et la date de publication.
-        $monitoringManager = new MonitoringManager();
-        $monitoring = $monitoringManager->getAllArticlesWithViewsAndComments();
+        $articleManager = new ArticleManager();
+        $articles = $articleManager->getAllArticlesWithViewsAndComments();
 
         // on trie le tableau en fonction des paramètre définit en Url
         if (isset($_GET['sort']) && in_array($_GET['sort'], ['title', 'date_creation', 'article_views', 'comments'])) {
@@ -27,15 +27,21 @@ class AdminController {
                 $order = 'asc';
             }
         } else {
-            $sort = 'date_creation';
-            $order = 'asc';
+            $sort = 'article_views';
+            $order = 'desc';
         }
-        $monitoring = Utils::sortArray($monitoring, $sort, $order);
-
+        $articles = Utils::sortArray($articles, $sort, $order);
+       
         // On affiche la page de monitoring.
         $view = new View("Monitoring");
         $view->render("monitoring", [
-            'monitoring' => $monitoring,
+            'articles' => $articles,
+            'sort' => $sort,
+            'order' => $order,
+            'title' => 'title',
+            'dateCreation' => 'date_creation',
+            'articleViews' => 'article_views',
+            'comments' => 'comments'  
         ]);
     }
 
